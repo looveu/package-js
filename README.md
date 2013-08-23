@@ -1,21 +1,22 @@
 # Package.js
 
-A javascript package manager and build tools designed for web app framework development in web browser environment.
+JavaScript package manager and build tools designed for web app framework development in web browser environment.
 
 ## Installation:
 
-You need install node.js and npm;See [http://nodejs.org/] and [http://npmjs.org/] ;
-
+You need install node.js and npm first;See http://nodejs.org/ and http://npmjs.org/ ;
+```bash
    $ cd package-js
    $ sudo npm install -g
+```
 
 ## Getting started:
 
-* Put package-js/src/Package directory to your statics js directory. For example as your-project/statics/jslibs/Package;
-* Create your library,named "XLib";
-* Create XLib/_nsconf_.js;
-* Create XLib/init.js;
-* Link XLib/_xproxy_.html to Package/_xproxy_.html if you want to cross domain load tpl.html or other assets;
+* Put ```package-js/src/Package``` directory to your static js directory. For example:```your-project/statics/jslibs/Package```;
+* Create your library,example:```XLib```;
+* Create ```XLib/_nsconf_.js```;
+* Create ```XLib/init.js```;
+* Link ```XLib/_xproxy_.html``` to ```Package/_xproxy_.html``` if you want to load tpl.html or other assets cross domains;
 * Create other packages;
 
-For complete references,see docs/Package.html;
+For complete references,see ```docs/Package.html```;
