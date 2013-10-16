@@ -311,12 +311,7 @@ function getAssets(pm,type) {
 
 
 function compressJS(code) {
-    var uglify=require('uglify-js').uglify;
-    var jsp=require('uglify-js').parser;
-    var ast = jsp.parse(code); // parse code and get the initial AST
-    ast = uglify.ast_mangle(ast); // get a new AST with mangled names
-    ast = uglify.ast_squeeze(ast); // get an AST with compression optimizations
-    return uglify.gen_code(ast); // compressed code here
+	return require('uglify-js').minify(code,{fromString: true});
 }
 function compressCSS(code) {
     var uglifycss=require('uglifycss');
@@ -485,7 +480,7 @@ function getExpandedPkgs(includes) {
             }
             var d=path.join(baseDir,filename);
             if (isValidPubVarName(filename) && isDir(d)) {
-                if (path.existsSync(d+"/init."+extname)) {
+                if (fs.existsSync(d+"/init."+extname)) {
                     return baseNsParts.concat(filename).join('.');
                 }
                 return findPkgsRecursive(d,baseNsParts.concat(filename),extname);
