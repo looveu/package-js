@@ -311,7 +311,7 @@ function getAssets(pm,type) {
 
 
 function compressJS(code) {
-	return require('uglify-js').minify(code,{fromString: true});
+	return require('uglify-js').minify(code,{fromString: true}).code;
 }
 function compressCSS(code) {
     var uglifycss=require('uglifycss');
