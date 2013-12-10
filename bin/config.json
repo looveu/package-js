@@ -48,5 +48,20 @@
     deps        只导出includes项列出的Package依赖的Package的JS和CSS
     all         导入includes及其依赖Package的JS和CSS
     */
-    "exportMode":"all" 
+    "exportMode":"all",
+    // js / css / css4ie6
+    "outputs":[
+        {
+            "format": "js",
+            "output": "../build/all.js"
+        },
+        {
+            "format": "css",
+            "output": "../build/all.css"
+        },
+        {
+            "format": "css4ie6",
+            "output": "../build/all.ie6.css"
+        }
+    ]
 }

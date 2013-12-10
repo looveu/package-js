@@ -36,13 +36,10 @@ if (require.main===module) {
 }
 
 function main(configFile,op,outputFile) {
-    if (arguments.length<3) {
-        return console.info(getHelp());
-    }
     op=String(op).toLowerCase();
-    if (['js','css','css4ie6'].indexOf(op)<0) {
-        return console.error('Operation type must be one of `js` or `css` or `css4ie6`!\nGiven:'+operation);
-    }
+    // if (['js','css','css4ie6'].indexOf(op)<0) {
+    //     return console.error('Operation type must be one of `js` or `css` or `css4ie6`!\nGiven:'+operation);
+    // }
     var baseDir=fs.realpathSync(path.dirname(configFile));
     var conf=fs.readFileSync(configFile,'utf-8');
     try {
@@ -60,6 +57,9 @@ function main(configFile,op,outputFile) {
         postloadStyles:[],
         exportMode:"all"
     });
+    if (arguments.length<3 && !conf.outputs) {
+        return console.info(getHelp());
+    }
     //conf.preloadScripts,postloadScripts,preloadStyles,postloadStyles,nsconfs
     //使用的是相对于configFile的路径，将它们全部转换成绝对路径
     var props="preloadScripts,postloadScripts,preloadStyles,postloadStyles,nsconfs".split(",");
@@ -70,11 +70,30 @@ function main(configFile,op,outputFile) {
             conf[props[i]]=paths.map(getAbsFile);
         }
     }
-
-    buildPkgs(conf,op,outputFile);
+    if(!conf.outputs){
+        conf.outputs = [
+            {
+                "format": op,
+                "output": outputFile
+            }
+        ]
+    }
+    for(var i=0;i<conf.outputs.length;i++){
+        if (['js','css','css4ie6'].indexOf(conf.outputs[i].format)<0) {
+            return console.error('Operation type must be one of `js` or `css` or `css4ie6`!\nGiven:'+operation);
+        }
+        _async(buildPkgs,[conf,conf.outputs[i].format,conf.outputs[i].output]);
+    }
+    // buildPkgs(conf,op,outputFile);
 
     function getAbsFile(p) {
 		return fs.realpathSync(path.join(baseDir,p));
+    }
+    function _async(f,args) {
+        setTimeout(function () {
+                f.apply(undefined,args);
+                f=undefined;
+        },0);
     }
 }
 
@@ -133,6 +152,7 @@ function buildPkgs(conf,op,outputFile) {
         }
     }
 	fs.writeFileSync(outputFile,data,'utf-8');
+    console.info("has compiled the file :  %s",outputFile);
 	function readFile(p) {
 		return fs.readFileSync(p,'utf-8');
 	}
